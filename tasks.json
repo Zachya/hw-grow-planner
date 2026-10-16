@@ -1,0 +1,152 @@
+[
+ {
+  "id": "538b3ccf64dc4348aeb39bbf21ff3b65",
+  "title": "每周通过一项微认证",
+  "bonus": 100,
+  "cycle": "每周",
+  "desc": "在华为云学堂中通过任意一项微认证，并获得微认证证书",
+  "url": "https://edu.huaweicloud.com/certification/micro/list?grow",
+  "degree": 2,
+  "done": false
+ },
+ {
+  "id": "0fa2a3d8650846ec9df0260c194828a6",
+  "title": "每周实践一个实验",
+  "bonus": 50,
+  "cycle": "每周",
+  "desc": "在华为云学堂中查看并实践任意一个实验",
+  "url": "https://edu.huaweicloud.com/lab/?grow",
+  "degree": 1,
+  "done": false
+ },
+ {
+  "id": "6fd4aacc657e444bbcd575532ab40972",
+  "title": "给AI办公实践中心代码仓提 Issue",
+  "bonus": 60,
+  "cycle": "每日",
+  "desc": "在AI办公实践中心任意代码仓中提交 Issue，帮助实践中心改进",
+  "url": "https://hands-on-agent.developer.huaweicloud.com/#tasks",
+  "degree": 1,
+  "done": false
+ },
+ {
+  "id": "db85b455d10b4056bd6be6e49bbfe4f5",
+  "title": "Star AI办公实践中心代码仓",
+  "bonus": 50,
+  "cycle": "限次",
+  "desc": "点击AI办公实践中心代码仓中任意感兴趣的项目的star按钮",
+  "url": "https://hands-on-agent.developer.huaweicloud.com/#tasks",
+  "degree": 1,
+  "done": false
+ },
+ {
+  "id": "c41b6265dd9a4ce0825805d59af1efd1",
+  "title": "每周体验AI 开发者空间",
+  "bonus": 30,
+  "cycle": "每周",
+  "desc": "访问AI办公实践中心，并体验AI 开发者空间",
+  "url": "https://hands-on-agent.developer.huaweicloud.com/#tasks",
+  "degree": 1,
+  "done": true
+ },
+ {
+  "id": "a728ddff74b842918d0137a0626f2272",
+  "title": "在开发者作品展览馆中发布作品",
+  "bonus": 200,
+  "cycle": "每日",
+  "desc": "使用AI开发者空间生成作品并发布到开发者作品展览馆中",
+  "url": "https://gallery.developer.huaweicloud.com/gallery/submit-guide",
+  "degree": 3,
+  "done": false
+ },
+ {
+  "id": "5cba933fe4ea4de995079a43a497f94e",
+  "title": "每日回答问题且被采纳",
+  "bonus": 60,
+  "cycle": "每日",
+  "desc": "在华为云开发者论坛问答专区回答问题，并且答案被采纳",
+  "url": "https://bbs.huaweicloud.com/forum/?utm_source=grow",
+  "degree": 2,
+  "done": false
+ },
+ {
+  "id": "7ab409f0fca048dd93565b6858bacbf1",
+  "title": "每日发布文章",
+  "bonus": 60,
+  "cycle": "每日",
+  "desc": "在华为云开发者社区中发布博客文章",
+  "url": "https://bbs.huaweicloud.com/blogs?utm_source=grow",
+  "degree": 2,
+  "done": true
+ },
+ {
+  "id": "fd6ae2d1fb024833b7512bafe7590f57",
+  "title": "每周参加开发者活动",
+  "bonus": 10,
+  "cycle": "每周",
+  "desc": " 报名参加开发者活动",
+  "url": "https://developer.huaweicloud.com/events?utm_source=grow",
+  "degree": 1,
+  "done": true
+ },
+ {
+  "id": "562ecdb2620b41c19484f484e05534d9",
+  "title": "每周参与开发者赛事",
+  "bonus": 100,
+  "cycle": "每周",
+  "desc": "报名参加华为云开发者任意一场赛事，并提交参赛作品",
+  "url": "https://developer.huaweicloud.com/competition/list?utm_source=grow",
+  "degree": 3,
+  "done": false
+ },
+ {
+  "id": "556bdfca043e4c76b8296195b86aebd2",
+  "title": "开发者赛事晋级",
+  "bonus": 200,
+  "cycle": "每月",
+  "desc": "在华为云开发者任意一场赛事中成功晋级",
+  "url": "https://developer.huaweicloud.com/usercenter/mycompetition?utm_source=grow",
+  "degree": 4,
+  "done": false
+ },
+ {
+  "id": "79dec3aae4b44b26bedb33c2169554d1",
+  "title": "实名认证",
+  "bonus": 50,
+  "cycle": "限次",
+  "desc": "完成实名认证",
+  "url": "https://account.huaweicloud.com/usercenter/?region=cn-north-4#/accountindex/realNameAuth?utm_source=grow",
+  "degree": 2,
+  "done": false
+ },
+ {
+  "id": "d031d4d7b5a74bf7961473d518707e26",
+  "title": "提交建议",
+  "bonus": 30,
+  "cycle": "每日",
+  "desc": "在云声提交建议并且通过预审",
+  "url": "https://bbs.huaweicloud.com/suggestion?source=grow",
+  "degree": 1,
+  "done": false
+ },
+ {
+  "id": "1779c53d9ac3442b89b6056eafa488b9",
+  "title": "建议被采纳",
+  "bonus": 60,
+  "cycle": "每周",
+  "desc": "在云声提交的建议被采纳",
+  "url": "https://developer.huaweicloud.com/space/support/my-suggestion?source=grow",
+  "degree": 2,
+  "done": false
+ },
+ {
+  "id": "715ae012a61344c7a87ef8ce40f19e1e",
+  "title": "建议被实现",
+  "bonus": 200,
+  "cycle": "每周",
+  "desc": "在云声提交的建议被实现",
+  "url": "https://developer.huaweicloud.com/space/support/my-suggestion?source=grow",
+  "degree": 3,
+  "done": false
+ }
+]

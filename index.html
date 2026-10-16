@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>华为云开发者成长中心 · 任务规划器</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --line:#e4e8ef; --text:#1f2733; --muted:#6b7787;
+    --brand:#2a6ff0; --brand-soft:#e8f0ff; --ok:#12a150; --ok-soft:#e6f6ec;
+    --warn:#e8891c; --warn-soft:#fdf1e0; --shadow:0 2px 12px rgba(31,39,51,.07);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg); color:var(--text); padding:28px 20px 60px; line-height:1.6;
+  }
+  .wrap{max-width:960px;margin:0 auto}
+  header{margin-bottom:22px}
+  h1{font-size:24px;font-weight:650;letter-spacing:.3px}
+  .sub{color:var(--muted);font-size:13px;margin-top:6px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0 22px}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .stat .k{font-size:12px;color:var(--muted)}
+  .stat .v{font-size:22px;font-weight:680;margin-top:2px}
+  .stat .v small{font-size:12px;font-weight:400;color:var(--muted);margin-left:2px}
+  .bar{height:8px;background:#eceff4;border-radius:99px;overflow:hidden;margin:0 0 22px}
+  .bar > i{display:block;height:100%;background:linear-gradient(90deg,#2a6ff0,#4f8bff);width:0;transition:width .4s ease}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+  button{
+    font:inherit;font-size:13px;padding:6px 14px;border-radius:8px;border:1px solid var(--line);
+    background:#fff;color:var(--text);cursor:pointer;transition:.15s;
+  }
+  button:hover{border-color:var(--brand);color:var(--brand)}
+  button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+  .group{margin-bottom:20px}
+  .group h2{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .group h2 .cnt{background:#eceff4;border-radius:99px;padding:1px 9px;font-size:12px;font-weight:500}
+  .list{display:flex;flex-direction:column;gap:8px}
+  .item{
+    background:var(--card);border:1px solid var(--line);border-radius:11px;padding:13px 15px;
+    display:flex;align-items:flex-start;gap:12px;box-shadow:var(--shadow);transition:.15s;
+  }
+  .item:hover{border-color:#c9d5ec}
+  .item.done{background:var(--ok-soft);border-color:#bfe4cd}
+  .cb{
+    width:19px;height:19px;border:2px solid #c4ccd8;border-radius:5px;flex:0 0 auto;margin-top:3px;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;background:#fff;
+  }
+  .cb:hover{border-color:var(--brand)}
+  .item.done .cb{background:var(--ok);border-color:var(--ok)}
+  .cb svg{opacity:0;width:11px;height:11px}
+  .item.done .cb svg{opacity:1}
+  .body{flex:1;min-width:0}
+  .title{font-size:14px;font-weight:560;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .item.done .title{text-decoration:line-through;color:var(--muted)}
+  .desc{font-size:12px;color:var(--muted);margin-top:3px}
+  .tags{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+  .tag{font-size:11px;padding:1px 8px;border-radius:5px;background:#f0f3f8;color:var(--muted)}
+  .tag.bonus{background:var(--warn-soft);color:var(--warn);font-weight:600}
+  .tag.done{background:var(--ok-soft);color:var(--ok)}
+  .go{font-size:12px;color:var(--brand);text-decoration:none;margin-left:auto;white-space:nowrap;flex:0 0 auto}
+  .go:hover{text-decoration:underline}
+  footer{margin-top:26px;font-size:12px;color:var(--muted);text-align:center}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>华为云开发者成长中心 · 任务规划器</h1>
+    <div class="sub">梳理成长中心全部任务的积分、周期与完成状态，勾选后自动统计已得分、待得分与完成率。数据保存在本地浏览器。</div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="k">总可获得</div><div class="v" id="s-total">0<small>分</small></div></div>
+    <div class="stat"><div class="k">已获得</div><div class="v" id="s-done" style="color:var(--ok)">0<small>分</small></div></div>
+    <div class="stat"><div class="k">待完成</div><div class="v" id="s-todo" style="color:var(--warn)">0<small>分</small></div></div>
+    <div class="stat"><div class="k">完成度</div><div class="v" id="s-rate">0<small>%</small></div></div>
+  </div>
+  <div class="bar"><i id="bar"></i></div>
+
+  <div class="toolbar">
+    <button data-f="all" class="on">全部</button>
+    <button data-f="todo">未完成</button>
+    <button data-f="done">已完成</button>
+    <span style="flex:1"></span>
+    <button id="reset">重置进度</button>
+  </div>
+
+  <div id="groups"></div>
+
+  <footer>任务数据取自华为云开发者成长中心公开任务列表，仅供个人规划参考。</footer>
+</div>
+
+<script>
+const TASKS = [
+  {
+    "id": "538b3ccf64dc4348aeb39bbf21ff3b65",
+    "title": "每周通过一项微认证",
+    "bonus": 100,
+    "cycle": "每周",
+    "desc": "在华为云学堂中通过任意一项微认证，并获得微认证证书",
+    "url": "https://edu.huaweicloud.com/certification/micro/list?grow",
+    "degree": 2,
+    "done": false
+  },
+  {
+    "id": "0fa2a3d8650846ec9df0260c194828a6",
+    "title": "每周实践一个实验",
+    "bonus": 50,
+    "cycle": "每周",
+    "desc": "在华为云学堂中查看并实践任意一个实验",
+    "url": "https://edu.huaweicloud.com/lab/?grow",
+    "degree": 1,
+    "done": false
+  },
+  {
+    "id": "6fd4aacc657e444bbcd575532ab40972",
+    "title": "给AI办公实践中心代码仓提 Issue",
+    "bonus": 60,
+    "cycle": "每日",
+    "desc": "在AI办公实践中心任意代码仓中提交 Issue，帮助实践中心改进",
+    "url": "https://hands-on-agent.developer.huaweicloud.com/#tasks",
+    "degree": 1,
+    "done": false
+  },
+  {
+    "id": "db85b455d10b4056bd6be6e49bbfe4f5",
+    "title": "Star AI办公实践中心代码仓",
+    "bonus": 50,
+    "cycle": "限次",
+    "desc": "点击AI办公实践中心代码仓中任意感兴趣的项目的star按钮",
+    "url": "https://hands-on-agent.developer.huaweicloud.com/#tasks",
+    "degree": 1,
+    "done": false
+  },
+  {
+    "id": "c41b6265dd9a4ce0825805d59af1efd1",
+    "title": "每周体验AI 开发者空间",
+    "bonus": 30,
+    "cycle": "每周",
+    "desc": "访问AI办公实践中心，并体验AI 开发者空间",
+    "url": "https://hands-on-agent.developer.huaweicloud.com/#tasks",
+    "degree": 1,
+    "done": true
+  },
+  {
+    "id": "a728ddff74b842918d0137a0626f2272",
+    "title": "在开发者作品展览馆中发布作品",
+    "bonus": 200,
+    "cycle": "每日",
+    "desc": "使用AI开发者空间生成作品并发布到开发者作品展览馆中",
+    "url": "https://gallery.developer.huaweicloud.com/gallery/submit-guide",
+    "degree": 3,
+    "done": false
+  },
+  {
+    "id": "5cba933fe4ea4de995079a43a497f94e",
+    "title": "每日回答问题且被采纳",
+    "bonus": 60,
+    "cycle": "每日",
+    "desc": "在华为云开发者论坛问答专区回答问题，并且答案被采纳",
+    "url": "https://bbs.huaweicloud.com/forum/?utm_source=grow",
+    "degree": 2,
+    "done": false
+  },
+  {
+    "id": "7ab409f0fca048dd93565b6858bacbf1",
+    "title": "每日发布文章",
+    "bonus": 60,
+    "cycle": "每日",
+    "desc": "在华为云开发者社区中发布博客文章",
+    "url": "https://bbs.huaweicloud.com/blogs?utm_source=grow",
+    "degree": 2,
+    "done": true
+  },
+  {
+    "id": "fd6ae2d1fb024833b7512bafe7590f57",
+    "title": "每周参加开发者活动",
+    "bonus": 10,
+    "cycle": "每周",
+    "desc": " 报名参加开发者活动",
+    "url": "https://developer.huaweicloud.com/events?utm_source=grow",
+    "degree": 1,
+    "done": true
+  },
+  {
+    "id": "562ecdb2620b41c19484f484e05534d9",
+    "title": "每周参与开发者赛事",
+    "bonus": 100,
+    "cycle": "每周",
+    "desc": "报名参加华为云开发者任意一场赛事，并提交参赛作品",
+    "url": "https://developer.huaweicloud.com/competition/list?utm_source=grow",
+    "degree": 3,
+    "done": false
+  },
+  {
+    "id": "556bdfca043e4c76b8296195b86aebd2",
+    "title": "开发者赛事晋级",
+    "bonus": 200,
+    "cycle": "每月",
+    "desc": "在华为云开发者任意一场赛事中成功晋级",
+    "url": "https://developer.huaweicloud.com/usercenter/mycompetition?utm_source=grow",
+    "degree": 4,
+    "done": false
+  },
+  {
+    "id": "79dec3aae4b44b26bedb33c2169554d1",
+    "title": "实名认证",
+    "bonus": 50,
+    "cycle": "限次",
+    "desc": "完成实名认证",
+    "url": "https://account.huaweicloud.com/usercenter/?region=cn-north-4#/accountindex/realNameAuth?utm_source=grow",
+    "degree": 2,
+    "done": false
+  },
+  {
+    "id": "d031d4d7b5a74bf7961473d518707e26",
+    "title": "提交建议",
+    "bonus": 30,
+    "cycle": "每日",
+    "desc": "在云声提交建议并且通过预审",
+    "url": "https://bbs.huaweicloud.com/suggestion?source=grow",
+    "degree": 1,
+    "done": false
+  },
+  {
+    "id": "1779c53d9ac3442b89b6056eafa488b9",
+    "title": "建议被采纳",
+    "bonus": 60,
+    "cycle": "每周",
+    "desc": "在云声提交的建议被采纳",
+    "url": "https://developer.huaweicloud.com/space/support/my-suggestion?source=grow",
+    "degree": 2,
+    "done": false
+  },
+  {
+    "id": "715ae012a61344c7a87ef8ce40f19e1e",
+    "title": "建议被实现",
+    "bonus": 200,
+    "cycle": "每周",
+    "desc": "在云声提交的建议被实现",
+    "url": "https://developer.huaweicloud.com/space/support/my-suggestion?source=grow",
+    "degree": 3,
+    "done": false
+  }
+];
+const KEY = 'hw-grow-planner-v1';
+const ORDER = {'每日':1,'每周':2,'每月':3,'限次':4,'一次性':5};
+
+let state = JSON.parse(localStorage.getItem(KEY) || '{}');
+TASKS.forEach(t => { if (state[t.id] === undefined) state[t.id] = t.done; });
+
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+function sum(pred){ return TASKS.filter(pred).reduce((a,t)=>a+t.bonus,0); }
+
+function render(filter){
+  // stats
+  const total = sum(()=>true);
+  const done  = sum(t=>state[t.id]);
+  const todo  = total - done;
+  const rate  = total ? Math.round(done/total*100) : 0;
+  document.getElementById('s-total').innerHTML = total + '<small>分</small>';
+  document.getElementById('s-done').innerHTML  = done  + '<small>分</small>';
+  document.getElementById('s-todo').innerHTML  = todo  + '<small>分</small>';
+  document.getElementById('s-rate').innerHTML  = rate  + '<small>%</small>';
+  document.getElementById('bar').style.width   = rate + '%';
+
+  // groups
+  const box = document.getElementById('groups');
+  box.innerHTML = '';
+  const cycles = [...new Set(TASKS.map(t=>t.cycle))].sort((a,b)=>(ORDER[a]||9)-(ORDER[b]||9));
+  const check = svg => '<svg viewBox="0 0 12 12" fill="none"><path d="M2 6.2l2.6 2.6L10 3.4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  cycles.forEach(cy => {
+    let items = TASKS.filter(t => t.cycle === cy);
+    if (filter === 'todo') items = items.filter(t => !state[t.id]);
+    if (filter === 'done') items = items.filter(t =>  state[t.id]);
+    if (!items.length) return;
+
+    const g = document.createElement('div');
+    g.className = 'group';
+    const got = items.filter(t=>state[t.id]).reduce((a,t)=>a+t.bonus,0);
+    const all = items.reduce((a,t)=>a+t.bonus,0);
+    g.innerHTML = '<h2>' + cy + '可做 <span class="cnt">' + got + ' / ' + all + ' 分</span></h2>';
+    const list = document.createElement('div');
+    list.className = 'list';
+
+    items.sort((a,b)=>b.bonus-a.bonus).forEach(t => {
+      const on = !!state[t.id];
+      const el = document.createElement('div');
+      el.className = 'item' + (on ? ' done' : '');
+      el.innerHTML =
+        '<div class="cb">' + check() + '</div>' +
+        '<div class="body">' +
+          '<div class="title">' + t.title + '</div>' +
+          (t.desc ? '<div class="desc">' + t.desc + '</div>' : '') +
+          '<div class="tags">' +
+            '<span class="tag bonus">+' + t.bonus + ' 分</span>' +
+            '<span class="tag">' + t.cycle + '</span>' +
+            (on ? '<span class="tag done">已完成</span>' : '') +
+          '</div>' +
+        '</div>' +
+        (t.url ? '<a class="go" href="' + t.url + '" target="_blank" rel="noopener">去完成 →</a>' : '');
+      el.querySelector('.cb').onclick = () => { state[t.id] = !state[t.id]; save(); render(cur); };
+      list.appendChild(el);
+    });
+    g.appendChild(list);
+    box.appendChild(g);
+  });
+}
+
+let cur = 'all';
+document.querySelectorAll('.toolbar button[data-f]').forEach(b => {
+  b.onclick = () => {
+    document.querySelectorAll('.toolbar button[data-f]').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); cur = b.dataset.f; render(cur);
+  };
+});
+document.getElementById('reset').onclick = () => {
+  if (!confirm('确定要清空所有勾选进度吗？')) return;
+  TASKS.forEach(t => state[t.id] = t.done); save(); render(cur);
+};
+render('all');
+</script>
+</body>
+</html>
